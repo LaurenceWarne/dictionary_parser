@@ -13,7 +13,7 @@ class OwlbotDictionarySpider(scrapy.Spider):
     word_slice = slice(len(api_url), -len("?format=json") - 3)
     allowed_domains = ['owlbot.info']
     # regex to remove tags which are in the text body for some reason.
-    regex = re.compile("<.*>?")
+    regex = re.compile("<.*?>")
 
     def __init__(self, wordfile=None, verbose=True):
 

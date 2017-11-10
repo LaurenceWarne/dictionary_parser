@@ -78,8 +78,7 @@ class OwlbotDictionaryDatabasePipeline(object):
             raise DropItem(
                 'Dictionary entry ' + item['word'] + ' is missing a word-type'
             )
-
-        
+        # Add the word to the words table if it isn't already added
         self.cursor.execute(
             'SELECT word FROM words WHERE word=?', (item['word'],)
         )
@@ -87,12 +86,12 @@ class OwlbotDictionaryDatabasePipeline(object):
             self.cursor.execute(
                 '''INSERT INTO words VALUES(?)''', (item["word"],)
             )
-
-        
+        # Add the new definition of the word
         self.cursor.execute(
             '''INSERT INTO definitions VALUES(?, ?, ?)''',
             (item['word'], item['type'], item['definition'])
         )
+        # If there is an example add it to the examples table
         if (not item['example'] is None):
             self.cursor.execute(
                 '''INSERT INTO examples VALUES(?, ?, ?)''',
